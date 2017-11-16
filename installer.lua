@@ -1,4 +1,12 @@
--- Dovecot installer
+-- letsencrypt-postfix-dovecot-installer
+-- Version: 					0.1
+-- Dependency:				PyroAPI
+-- Dependency version:	1.2
+
+local api = require "PyroAPI"
+
+local domain = api.get_input("Please enter your domain: ")
+
 local commands = {}
 
 commands[#commands+1] = "openssl genrsa -des3 -out pyro.key"
@@ -14,9 +22,9 @@ commands[#commands+1] = "mv pyro.key /etc/ssl/private/"
 commands[#commands+1] = "mv pyro.crt /etc/ssl/certs/"
 commands[#commands+1] = "mv cakey.pem /etc/ssl/private/"
 commands[#commands+1] = "mv cacert.pem /etc/ssl/certs/"
-commands[#commands+1] = "postconf -e \"myhostname = lars.ltd\""
-commands[#commands+1] = "postconf -e \"mydomain = lars.ltd\""
-commands[#commands+1] = "postconf -e \"myorigin = lars.ltd\""
+commands[#commands+1] = "postconf -e \"myhostname = " .. domain .. "\""
+commands[#commands+1] = "postconf -e \"mydomain = " .. domain .. "\""
+commands[#commands+1] = "postconf -e \"myorigin = " .. domain .. "\""
 commands[#commands+1] = "postconf -e \"home_mailbox = Maildir/\""
 commands[#commands+1] = "postconf -e \"mailbox_command = \""
 commands[#commands+1] = "postconf -e \"smtpd_sasl_type = dovecot\""
